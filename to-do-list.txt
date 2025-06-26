@@ -1,0 +1,94 @@
+🧱 1. Infraestructura básica (ambiente de desarrollo y pruebas)
+Objetivo: Poder ejecutar y testear backend y dispositivos sin depender aún de la app ni del mapa.
+
+Tareas:
+
+Montar un entorno de backend en tu VPS (o local) con Python + MySQL.
+
+Levantar el broker MQTT (Mosquitto) y testear con cliente de prueba (como MQTT.fx o mosquitto_pub/sub).
+
+Crear una base de datos simple con una tabla de ubicación (id, lat, lon, timestamp, device_id).
+
+Hacer un pequeño script en Python que se conecte al broker, reciba mensajes MQTT y los guarde en MySQL.
+
+🔁 Avance validado cuando:
+
+Puedes enviar datos desde una consola MQTT al backend y verlos en la base de datos.
+
+📡 2. Integración GPS - ESP32
+Objetivo: Tener datos reales o simulados desde la plaqueta.
+
+Tareas:
+
+Programar la ESP32 para enviar coordenadas vía MQTT al broker.
+
+Usar payload tipo JSON: { "lat": ..., "lon": ..., "id": ..., "time": ... }
+
+Asegurar conexión con el broker MQTT y reintento ante desconexiones.
+
+🔁 Avance validado cuando:
+
+Los datos del ESP32 llegan al broker y son persistidos por el backend.
+
+🔄 3. Backend WebSocket + REST API
+Objetivo: Servir datos al cliente y recibir consultas o comandos.
+
+Tareas:
+
+Exponer endpoints REST:
+
+GET /locations/latest?id=123
+
+GET /locations/history?id=123&from=...&to=...
+
+Implementar WebSocket que emita cada nueva coordenada en tiempo real a los clientes suscritos.
+
+🔁 Avance validado cuando:
+
+Puedes consumir desde Postman (REST) y desde un cliente WebSocket simple.
+
+📱 4. Frontend Flutter (Web + App)
+Objetivo: Ver ubicación en el mapa desde cliente.
+
+Tareas:
+
+Crear UI básica con login (si aplica) y vista con mapa.
+
+Integrar el mapa raster mediante peticiones HTTP.
+
+Mostrar posición actual en tiempo real con WebSocket.
+
+Mostrar histórico con REST.
+
+🔁 Avance validado cuando:
+
+Se puede ver un marcador en el mapa que se actualiza en tiempo real.
+
+🗺️ 5. Servidor de mapas Raster
+Objetivo: Servir tiles personalizados o cacheados.
+
+Tareas:
+
+Instalar/usar un servidor raster tipo TileServer GL, MapServer o similar.
+
+Exponer tiles vía HTTP (/tiles/z/x/y.png) o directamente desde archivos cacheados.
+
+Integrar capa raster en el mapa Flutter.
+
+🔁 Avance validado cuando:
+
+El mapa carga desde tu VPS sin depender de servicios externos.
+
+✅ 6. Testing + mejora continua
+Objetivo: Consolidar la solución con pruebas y mejoras.
+
+Tareas:
+
+Pruebas de carga (¿cuántos GPS puede soportar?).
+
+Validaciones de datos en el backend (coordenadas válidas).
+
+Gestión de errores y desconexiones.
+
+Agregar autenticación/autorización (tokens JWT, API keys, etc.).
+
